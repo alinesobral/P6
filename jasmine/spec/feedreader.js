@@ -8,7 +8,7 @@ $(function() {
 	describe('RSS Feeds', function() {
 		/*This test tests if the allFeeds object, containing the URL and the name of the blogs, is defined
 	and not empty. */
-			it('are defined', function() {
+		it('are defined', function() {
 			expect(allFeeds).toBeDefined();
 			expect(allFeeds.length).not.toBe(0);
 		});
@@ -61,26 +61,29 @@ $(function() {
 		/* This test tests if there is at least one .entry element within the .feed container
     	when the loadFeed() function, which is asynchronous, is executed. */
 		beforeEach(function(done) {
-			loadFeed(0, function() {
-				done();
-			});
+			loadFeed(0, done);
 		});
 
 		it('returns at least a single .entry element', function() {
-			expect($('.feed .entry').length>=1).toBeTruthy();
+			expect($('.feed .entry').length >= 1).toBeTruthy();
 		});
 	});
 
 	describe('New Feed Selection', function() {
 
-		//initialTitle will have the value for when init() is executed
+		/* $initialTitle will have the value for the first loadFeed (loadFeed(0)). */
 		var $initialTitle;
+
 		/* This test tests if when the loadFeed() function loads a new feed, the content of the page changes. 
-		In this case, the previous blog name is compared to the new one (after running the loadFeed() function).*/
+		
+		1) The loadFeed(0) loads the feed from allFeeds(0). 
+		2) In its callback function, the blog title is saved and another feed is loaded (in this case, loadFeed(1).
+		3) The previous blog name is compared to the new one (after running loadFeed(1)).*/
+	
 		beforeEach(function(done) {
-			$initialTitle = $('.header-title').text();
-			loadFeed(1, function() {
-				done();
+			loadFeed(0, function() {
+				$initialTitle = $('.header-title').text();
+				loadFeed(1, done)
 			});
 		});
 
